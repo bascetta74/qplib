@@ -1,0 +1,40 @@
+#!/bin/bash
+folders=( 
+"cost_function"
+"cost_function+INconstr"
+"cost_function+LUbound"
+"cost_function+LUbound+INconstr"
+"cost_function+LUbound+INconstr+EQconstr"
+"cost_function+INconstr+QINconstr"
+"cost_function+LUbound+INconstr+EQconstr+QINconstr"
+"cost_function+LUbound+INconstr+QINconstr" 
+)
+
+case $1 in
+  "make")
+    for i in "${folders[@]}"
+    do
+        make -C ../$i test_rand
+    done  
+    ;;
+  "run")
+    for i in "${folders[@]}"
+    do
+        cd ../$i
+        ./test_rand
+        cd $PWD
+    done
+    ;;
+  "clean")
+    for i in "${folders[@]}"
+    do
+        make -C ../$i clean
+        rm ../$i/output/*
+        rm ../$i/script/*
+    done
+    ;;
+  *)
+    echo "Error: Unknown command"
+    ;;
+esac
+

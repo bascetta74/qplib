@@ -20,4 +20,5 @@ disp(['Total feasible problems (matlab): ', mat2str(length(feasible_matlab))]);
 disp(['Total unfeasible problems (matlab): ', mat2str(length(unfeasible_matlab))]);
 
 solution_index = 1:1:length(solution_error);
-figure,plot(solution_index(find(solution_error>0)),solution_error(find(solution_error>0)),'x'),grid
+figure,plot(solution_index(find(solution_error>0)),solution_error(find(solution_error>0)),'x'),grid,...
+    xlabel('Problem number'),ylabel('Error')

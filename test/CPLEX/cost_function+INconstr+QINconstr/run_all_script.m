@@ -5,18 +5,18 @@ clc
 numScript = 1000;
 
 for k=1:numScript
-    scriptName = ['./script/test_', mat2str(k), '_script.m'];
+    scriptName = ['./script/test_', mat2str(k), '.m'];
     run(scriptName);
     
-    outputName = ['./output/test_', mat2str(k), '_script.mat'];
+    outputName = ['./output/test_', mat2str(k), '.mat'];
     save(outputName);
+    
+    clearvars -EXCEPT numScript
 end
-
-clearvars -EXCEPT numScript
 
 solution_error = -ones(1,numScript);
 for k=1:numScript
-    outputName = ['./output/test_', mat2str(k), '_script.mat'];
+    outputName = ['./output/test_', mat2str(k), '.mat'];
     script_output = load(outputName);
     
     if (script_output.exitflag==1) & (script_output.exitflag_cpp==1)

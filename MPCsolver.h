@@ -12,6 +12,7 @@ class MPCsolver
 {
 public:
     enum printLevelType {NONE, LOW, MEDIUM, HIGH};
+    enum solverType {AUTO, PRIMAL, DUAL, NETWORK, BARRIER, SIFTING, CONCURRENT};
 
     virtual bool initProblem() =0;
     virtual bool setProblem(const Ref<const MatrixXd> hessian, const Ref<const VectorXd> gradient) =0;
@@ -41,13 +42,22 @@ public:
     int get_numEqConstraint() { return _numEqConstraint; }
     int get_numIneqConstraint() { return _numIneqConstraint; }
 
-    virtual void set_printLevel(printLevelType printLevel) =0;
+    virtual solverType get_solverMethod() =0;
+
+    virtual void set_solverMethod(const solverType solver) =0;
+    virtual void set_solverParams(const double convergence_tolerance_QP, const double convergence_tolerance_QCP,
+                                  const double optimality_tolerance, const double feasibility_tolerance) =0;
+    virtual void set_printLevel(const printLevelType printLevel) =0;
 
 protected:
     int _numVariable;
     int _numEqConstraint;
     int _numIneqConstraint;
     int _numQIneqConstraint;
+
+    double _convergenceTolQP, _convergenceTolQCP;
+    double _optimalityTol;
+    double _feasibilityTol;
 };
 
 #endif /* MPCSOLVER_H_ */

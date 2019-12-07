@@ -1,14 +1,12 @@
-CCLNFLAGS = -lconcert -lilocplex -lcplex -lm -lpthread
+CCLNFLAGS = -lconcert -lilocplex -lcplex -lm -lpthread -ldl
 
-#CCLNDIRS = -L/home/ehsan/workspace/cplex/concert/lib/x86-64_linux/static_pic -L/home/ehsan/workspace/cplex/cplex/lib/x86-64_linux/static_pic
-CCLNDIRS = -L/opt/ibm/ILOG/CPLEX_Studio1263/concert/lib/x86-64_linux/static_pic -L/opt/ibm/ILOG/CPLEX_Studio1263/cplex/lib/x86-64_linux/static_pic -L/opt/qpOASES-3.2.0/bin
+CCLNDIRS = -L/opt/ibm/ILOG/CPLEX_Studio129/concert/lib/x86-64_linux/static_pic -L/opt/ibm/ILOG/CPLEX_Studio129/cplex/lib/x86-64_linux/static_pic -L/opt/qpOASES-3.2.1/bin
 
-CCOPT = -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD
+CCOPT = -m64 -O0 -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD -std=c++11
 
-#CCFLAGS = $(CCOPT) -I/usr/include/eigen -I/home/ehsan/workspace/cplex/cplex/include/ -I/home/ehsan/workspace/cplex/concert/include/ -I/opt/qpOASES-3.2.0/include/
-CCFLAGS = $(CCOPT) -I/usr/include/eigen3 -I/opt/ibm/ILOG/CPLEX_Studio1263/cplex/include/ -I/opt/ibm/ILOG/CPLEX_Studio1263/concert/include/ -I/opt/qpOASES-3.2.0/include/ -I../../../ -I../../../util/
+CCFLAGS = $(CCOPT) -I/usr/include/eigen3 -I/opt/ibm/ILOG/CPLEX_Studio129/cplex/include/ -I/opt/ibm/ILOG/CPLEX_Studio129/concert/include/ -I/opt/qpOASES-3.2.1/include/ -I../../../ -I../../../util/
 
-CCC = g++ -O0 -std=c++11
+CCC = g++
 
 test_1: test_1.o CPLEXsolver.o writeMatlabScript.o
 	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test_1 test_1.o CPLEXsolver.o writeMatlabScript.o $(CCLNFLAGS)
@@ -35,14 +33,30 @@ test_5: test_5.o CPLEXsolver.o writeMatlabScript.o
 test_5.o: test_5.cpp
 	$(CCC) -c $(CCFLAGS) test_5.cpp -o test_5.o
 
+test_6: test_6.o CPLEXsolver.o writeMatlabScript.o
+	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test_6 test_6.o CPLEXsolver.o writeMatlabScript.o $(CCLNFLAGS)
+test_6.o: test_6.cpp
+	$(CCC) -c $(CCFLAGS) test_6.cpp -o test_6.o
+
+test_7: test_7.o
+	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test_7 test_7.o $(CCLNFLAGS)
+test_7.o: test_7.cpp
+	$(CCC) -c $(CCFLAGS) test_7.cpp -o test_7.o
+
+test_rand: test_rand.o CPLEXsolver.o writeMatlabScript.o
+	$(CCC) $(CCFLAGS) $(CCLNDIRS) -o test_rand test_rand.o CPLEXsolver.o writeMatlabScript.o $(CCLNFLAGS)
+test_rand.o: test_rand.cpp
+	$(CCC) -c $(CCFLAGS) test_rand.cpp -o test_rand.o
+
 CPLEXsolver.o: ../../../CPLEXsolver.cpp
 	$(CCC) -c $(CCFLAGS) ../../../CPLEXsolver.cpp -o CPLEXsolver.o
 writeMatlabScript.o: ../../../util/writeMatlabScript.cpp
 	$(CCC) -c $(CCFLAGS) ../../../util/writeMatlabScript.cpp -o writeMatlabScript.o
 
-all: test_1 test_2 test_3 test_4 test_5
+all: test_1 test_2 test_3 test_4 test_5 test_6 test_7 test_rand
 
 clean:
-	@rm -rf *.o *.lp
-	@rm -rf test_1 test_2 test_3 test_4 test_5
+	@rm -rf *.o *.lp test_*.m *.mat
+	@rm -rf test_1 test_2 test_3 test_4 test_5 test_6 test_7 test_rand
+	@rm -rf ./script/* ./output/*
 

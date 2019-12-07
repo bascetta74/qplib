@@ -1,10 +1,10 @@
 CCLNFLAGS = -lconcert -lilocplex -lcplex -lm -lpthread
 
-CCLNDIRS = -L/opt/ibm/ILOG/CPLEX_Studio1263/concert/lib/x86-64_linux/static_pic -L/opt/ibm/ILOG/CPLEX_Studio1263/cplex/lib/x86-64_linux/static_pic -L./qpOASES-3.2.1/bin
+CCLNDIRS = -L/opt/ibm/ILOG/CPLEX_Studio129/concert/lib/x86-64_linux/static_pic -L/opt/ibm/ILOG/CPLEX_Studio129/cplex/lib/x86-64_linux/static_pic -L./qpOASES-3.2.1/bin
 
-CCOPT = -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD
+CCOPT = -m64 -O -fPIC -fno-strict-aliasing -fexceptions -DNDEBUG -DIL_STD
 
-CCFLAGS = $(CCOPT) -I/usr/include/eigen3 -I/opt/ibm/ILOG/CPLEX_Studio1263/cplex/include/ -I/opt/ibm/ILOG/CPLEX_Studio1263/concert/include/ -I./qpOASES-3.2.1/include/
+CCFLAGS = $(CCOPT) -I/usr/include/eigen3 -I/opt/ibm/ILOG/CPLEX_Studio129/cplex/include/ -I/opt/ibm/ILOG/CPLEX_Studio129/concert/include/ -I./qpOASES-3.2.1/include/
 
 CCC = g++ -O0 -std=c++11
 

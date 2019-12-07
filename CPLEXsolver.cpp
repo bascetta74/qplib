@@ -19,6 +19,10 @@ CPLEXsolver::CPLEXsolver(const int numVariable, const int numIneqConstraint, con
     _numQIneqConstraint = numQIneqConstraint;
     _solverMethod       = solverMethod;
     _IloInitialized     = false;
+    _convergenceTolQP   = 1.0e-8;
+    _convergenceTolQCP  = 1.0e-8;
+    _optimalityTol      = 1.0e-6;
+    _feasibilityTol     = 1.0e-6;
 }
 
 CPLEXsolver::CPLEXsolver(const int numVariable, const int numIneqConstraint, const int numEqConstraint, const int numQIneqConstraint)
@@ -30,6 +34,10 @@ CPLEXsolver::CPLEXsolver(const int numVariable, const int numIneqConstraint, con
     _numQIneqConstraint = numQIneqConstraint;
     _solverMethod       = AUTO;
     _IloInitialized     = false;
+    _convergenceTolQP   = 1.0e-8;
+    _convergenceTolQCP  = 1.0e-8;
+    _optimalityTol      = 1.0e-6;
+    _feasibilityTol     = 1.0e-6;
 }
 
 CPLEXsolver::CPLEXsolver()
@@ -41,6 +49,10 @@ CPLEXsolver::CPLEXsolver()
     _numQIneqConstraint = -1;
     _solverMethod       = AUTO;
     _IloInitialized     = false;
+    _convergenceTolQP   = 1.0e-8;
+    _convergenceTolQCP  = 1.0e-8;
+    _optimalityTol      = 1.0e-6;
+    _feasibilityTol     = 1.0e-6;
 }
 
 bool CPLEXsolver::initProblem()
@@ -71,12 +83,6 @@ bool CPLEXsolver::initProblem()
         _IloModel.add(_IloObj);
         objExpr.end();
 
-        // Create a dummy set of equality constraints
-        for (int i=0; i<_numEqConstraint; i++)
-            _IloConstrEq.add(-1.0 <= _IloVar[0] <= 1.0);
-        if (_numEqConstraint>0)
-            _IloModel.add(_IloConstrEq);
-
         // Create a dummy problem
         _IloCplex = IloCplex(_IloModel);
         _IloInitialized = true;
@@ -87,22 +93,40 @@ bool CPLEXsolver::initProblem()
         case AUTO:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Auto);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Auto);
+
+            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);            
         	break;
         case PRIMAL:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Primal);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Primal);
+
+            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
         	break;
         case DUAL:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Dual);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Dual);
+
+            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
         	break;
         case NETWORK:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Network);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Network);
+            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
         	break;
         case BARRIER:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Barrier);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Barrier);
+
+            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);
         	break;
         case SIFTING:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Sifting);
@@ -115,6 +139,13 @@ bool CPLEXsolver::initProblem()
         default:
         	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Auto);
         	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Auto);
+
+            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
+            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);
         }
     }
     catch (IloException& e)
@@ -123,6 +154,19 @@ bool CPLEXsolver::initProblem()
         std::cout << "\t [" << e << "]" << std::endl;
         return false;
     }
+
+    /** Display CPLEX solver parameters */
+    std::cout << std::endl;
+    std::cout << "---------- CPLEX solver parameters ----------" << std::endl;
+    std::cout << "Initial algorithm: " << _IloCplex.getParam(IloCplex::RootAlg) << std::endl;
+    std::cout << "Subproblem algorithm: " << _IloCplex.getParam(IloCplex::NodeAlg) << std::endl;
+    std::cout << "Optimality tolerance: " << _IloCplex.getParam(IloCplex::EpOpt) << std::endl;
+    std::cout << "Feasibility tolerance: " << _IloCplex.getParam(IloCplex::EpRHS) << std::endl;
+    std::cout << "Optimality tolerance (network): " << _IloCplex.getParam(IloCplex::NetEpOpt) << std::endl;
+    std::cout << "Feasibility tolerance (network): " << _IloCplex.getParam(IloCplex::NetEpRHS) << std::endl;
+    std::cout << "QP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::BarEpComp) << std::endl;
+    std::cout << "QCP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::BarQCPEpComp) << std::endl;
+    std::cout << "---------------------------------------------" << std::endl << std::endl;
 
     return true;
 }
@@ -345,7 +389,7 @@ bool CPLEXsolver::setProblem(const Ref<const MatrixXd> hessian, const Ref<const 
 
 
 bool CPLEXsolver::setProblem(const Ref<const MatrixXd> hessian, const Ref<const VectorXd> gradient, const Ref<const MatrixXd> A, const Ref<const VectorXd> B,
-                    const std::vector<VectorXd>& l, const std::vector<MatrixXd> Q, const std::vector<double>& r)
+                             const std::vector<VectorXd>& l, const std::vector<MatrixXd> Q, const std::vector<double>& r)
 // Set an optimization problem characterized by cost function, linear inequality constraints and quadratic inequality constraints
 // Cost function                     min 0.5*xT*H*x+fT*x
 // Linear inequality constraints         Ax <= B
@@ -606,7 +650,8 @@ bool CPLEXsolver::setProblem(const std::vector<double>& lowerBound, const std::v
 }
 
 bool CPLEXsolver::setProblem(const std::vector<double>& lowerBound, const std::vector<double>& upperBound, const Ref<const MatrixXd> hessian,
-                const Ref<const VectorXd> gradient, const std::vector<VectorXd>& l, const std::vector<MatrixXd> Q, const std::vector<double>& r)
+                             const Ref<const VectorXd> gradient, const std::vector<VectorXd>& l, const std::vector<MatrixXd> Q,
+                             const std::vector<double>& r)
 // Set an optimization problem characterized by cost function, lower/upper bound and quadratic constraints
 // Cost function                              min 0.5*xT*H*x+fT*x
 // Variable constraints                          lb <= x <= ub

@@ -10,8 +10,6 @@
 class CPLEXsolver : public MPCsolver
 {
 public:
-    enum solverType {AUTO, PRIMAL, DUAL, NETWORK, BARRIER, SIFTING, CONCURRENT};
-
     CPLEXsolver(const int numVariable, const int numIneqConstraint, const int numEqConstraint, const int numQIneqConstraint, const solverType solverMethod);
     CPLEXsolver(const int numVariable, const int numIneqConstraint, const int numEqConstraint, const int numQIneqConstraint);
     CPLEXsolver();
@@ -46,7 +44,11 @@ public:
     void set_printLevel(const printLevelType printLevel);
 
     void set_solverMethod(const solverType solverMethod) { _solverMethod = solverMethod; }
-    int get_solverMethod() { return _solverMethod; }
+    void set_solverParams(const double convergence_tolerance_QP, const double convergence_tolerance_QCP,
+                          const double optimality_tolerance, const double feasibility_tolerance)
+                                { _convergenceTolQP = convergence_tolerance_QP; _convergenceTolQCP = convergence_tolerance_QCP;
+                                  _optimalityTol = optimality_tolerance; _feasibilityTol = feasibility_tolerance; }
+    solverType get_solverMethod() { return _solverMethod; }
 
 private:
     solverType        _solverMethod;
