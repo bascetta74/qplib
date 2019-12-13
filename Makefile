@@ -19,8 +19,9 @@ libCPLEXsolver_cwrapper.so: CPLEXsolver_cwrapper.cpp
 
 libMPCsolver.so: CPLEXsolver.cpp qpOASESsolver.cpp
 	$(CCC) -c $(CCFLAGS) CPLEXsolver.cpp -o CPLEXsolver.o
-	$(CCC) -c $(CCFLAGS) qpOASESsolver.cpp -o qpOASESsolver.o
-	$(CCC) -shared -Wl,-soname,libMPCsolver.so -o libMPCsolver.so CPLEXsolver.o qpOASESsolver.o
+	$(CCC) -shared -Wl,-soname,libMPCsolver.so -o libMPCsolver.so CPLEXsolver.o
+#	$(CCC) -c $(CCFLAGS) qpOASESsolver.cpp -o qpOASESsolver.o
+#	$(CCC) -shared -Wl,-soname,libMPCsolver.so -o libMPCsolver.so CPLEXsolver.o qpOASESsolver.o
 
 all: libMPCsolver.so libMPCsolver_cwrapper.so
 
