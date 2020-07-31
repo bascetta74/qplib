@@ -4,7 +4,7 @@
 #include "MPCsolver.h"
 
 #include <string>
-#include <ilcplex/ilocplex.h>
+#include <ilcplex/ilocplexi.h>
 
 
 class CPLEXsolver : public MPCsolver

@@ -91,61 +91,61 @@ bool CPLEXsolver::initProblem()
         switch(_solverMethod)
         {
         case AUTO:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Auto);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Auto);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Auto);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Auto);
 
-            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
-            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
-            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
-            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);            
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Feasibility, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Barrier::ConvergeTol, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::Param::Barrier::QCPConvergeTol, _convergenceTolQCP);            
         	break;
         case PRIMAL:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Primal);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Primal);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Primal);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Primal);
 
-            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, _feasibilityTol);
         	break;
         case DUAL:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Dual);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Dual);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Dual);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Dual);
 
-            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, _feasibilityTol);
         	break;
         case NETWORK:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Network);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Network);
-            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Network);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Network);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Feasibility, _feasibilityTol);
         	break;
         case BARRIER:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Barrier);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Barrier);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Barrier);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Barrier);
 
-            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
-            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);
+            _IloCplex.setParam(IloCplex::Param::Barrier::ConvergeTol, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::Param::Barrier::QCPConvergeTol, _convergenceTolQCP);
         	break;
         case SIFTING:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Sifting);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Sifting);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Sifting);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Sifting);
         	break;
         case CONCURRENT:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Concurrent);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Concurrent);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Concurrent);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Concurrent);
         	break;
         default:
-        	_IloCplex.setParam(IloCplex::RootAlg, IloCplex::Auto);
-        	_IloCplex.setParam(IloCplex::NodeAlg, IloCplex::Auto);
+        	_IloCplex.setParam(IloCplex::Param::RootAlgorithm, IloCplex::Auto);
+        	_IloCplex.setParam(IloCplex::Param::NodeAlgorithm, IloCplex::Auto);
 
-            _IloCplex.setParam(IloCplex::EpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::EpRHS, _feasibilityTol);
-            _IloCplex.setParam(IloCplex::NetEpOpt, _optimalityTol);
-            _IloCplex.setParam(IloCplex::NetEpRHS, _feasibilityTol);
-            _IloCplex.setParam(IloCplex::BarEpComp, _convergenceTolQP);
-            _IloCplex.setParam(IloCplex::BarQCPEpComp, _convergenceTolQCP);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Tolerances::Feasibility, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Optimality, _optimalityTol);
+            _IloCplex.setParam(IloCplex::Param::Network::Tolerances::Feasibility, _feasibilityTol);
+            _IloCplex.setParam(IloCplex::Param::Barrier::ConvergeTol, _convergenceTolQP);
+            _IloCplex.setParam(IloCplex::Param::Barrier::QCPConvergeTol, _convergenceTolQCP);
         }
     }
     catch (IloException& e)
@@ -158,14 +158,14 @@ bool CPLEXsolver::initProblem()
     /** Display CPLEX solver parameters */
     std::cout << std::endl;
     std::cout << "---------- CPLEX solver parameters ----------" << std::endl;
-    std::cout << "Initial algorithm: " << _IloCplex.getParam(IloCplex::RootAlg) << std::endl;
-    std::cout << "Subproblem algorithm: " << _IloCplex.getParam(IloCplex::NodeAlg) << std::endl;
-    std::cout << "Optimality tolerance: " << _IloCplex.getParam(IloCplex::EpOpt) << std::endl;
-    std::cout << "Feasibility tolerance: " << _IloCplex.getParam(IloCplex::EpRHS) << std::endl;
-    std::cout << "Optimality tolerance (network): " << _IloCplex.getParam(IloCplex::NetEpOpt) << std::endl;
-    std::cout << "Feasibility tolerance (network): " << _IloCplex.getParam(IloCplex::NetEpRHS) << std::endl;
-    std::cout << "QP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::BarEpComp) << std::endl;
-    std::cout << "QCP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::BarQCPEpComp) << std::endl;
+    std::cout << "Initial algorithm: " << _IloCplex.getParam(IloCplex::Param::RootAlgorithm) << std::endl;
+    std::cout << "Subproblem algorithm: " << _IloCplex.getParam(IloCplex::Param::NodeAlgorithm) << std::endl;
+    std::cout << "Optimality tolerance: " << _IloCplex.getParam(IloCplex::Param::Simplex::Tolerances::Optimality) << std::endl;
+    std::cout << "Feasibility tolerance: " << _IloCplex.getParam(IloCplex::Param::Simplex::Tolerances::Feasibility) << std::endl;
+    std::cout << "Optimality tolerance (network): " << _IloCplex.getParam(IloCplex::Param::Network::Tolerances::Optimality) << std::endl;
+    std::cout << "Feasibility tolerance (network): " << _IloCplex.getParam(IloCplex::Param::Network::Tolerances::Feasibility) << std::endl;
+    std::cout << "QP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::Param::Barrier::ConvergeTol) << std::endl;
+    std::cout << "QCP convergence tolerance (barrier): " << _IloCplex.getParam(IloCplex::Param::Barrier::QCPConvergeTol) << std::endl;
     std::cout << "---------------------------------------------" << std::endl << std::endl;
 
     return true;
@@ -1498,31 +1498,31 @@ void CPLEXsolver::set_printLevel(const printLevelType printLevel)
         switch(_solverMethod)
         {
         case AUTO:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
           	break;
         case PRIMAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
         	break;
         case DUAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
         	break;
         case NETWORK:
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
         	break;
         case BARRIER:
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
         	break;
         case SIFTING:
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
         	break;
         case CONCURRENT:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
         	break;
         }
         break;
@@ -1531,31 +1531,31 @@ void CPLEXsolver::set_printLevel(const printLevelType printLevel)
         switch(_solverMethod)
         {
         case AUTO:
-            _IloCplex.setParam(IloCplex::SimDisplay, 1);
-            _IloCplex.setParam(IloCplex::NetDisplay, 1);
-            _IloCplex.setParam(IloCplex::BarDisplay, 1);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 1);
           	break;
         case PRIMAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 1);
         	break;
         case DUAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 1);
         	break;
         case NETWORK:
-            _IloCplex.setParam(IloCplex::NetDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 1);
         	break;
         case BARRIER:
-            _IloCplex.setParam(IloCplex::BarDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 1);
         	break;
         case SIFTING:
-            _IloCplex.setParam(IloCplex::SiftDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 1);
         	break;
         case CONCURRENT:
-            _IloCplex.setParam(IloCplex::SimDisplay, 1);
-            _IloCplex.setParam(IloCplex::NetDisplay, 1);
-            _IloCplex.setParam(IloCplex::BarDisplay, 1);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 1);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 1);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 1);
         	break;
         }
         break;
@@ -1564,31 +1564,31 @@ void CPLEXsolver::set_printLevel(const printLevelType printLevel)
         switch(_solverMethod)
         {
         case AUTO:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
           	break;
         case PRIMAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
         	break;
         case DUAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
         	break;
         case NETWORK:
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
         	break;
         case BARRIER:
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
         	break;
         case SIFTING:
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
         	break;
         case CONCURRENT:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
         	break;
         }
         break;
@@ -1597,31 +1597,31 @@ void CPLEXsolver::set_printLevel(const printLevelType printLevel)
         switch(_solverMethod)
         {
         case AUTO:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
           	break;
         case PRIMAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
         	break;
         case DUAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
         	break;
         case NETWORK:
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
         	break;
         case BARRIER:
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
         	break;
         case SIFTING:
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
         	break;
         case CONCURRENT:
-            _IloCplex.setParam(IloCplex::SimDisplay, 2);
-            _IloCplex.setParam(IloCplex::NetDisplay, 2);
-            _IloCplex.setParam(IloCplex::BarDisplay, 2);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 2);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 2);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 2);
         	break;
         }
         break;
@@ -1630,31 +1630,31 @@ void CPLEXsolver::set_printLevel(const printLevelType printLevel)
         switch(_solverMethod)
         {
         case AUTO:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
           	break;
         case PRIMAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
         	break;
         case DUAL:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
         	break;
         case NETWORK:
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
         	break;
         case BARRIER:
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
         	break;
         case SIFTING:
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
         	break;
         case CONCURRENT:
-            _IloCplex.setParam(IloCplex::SimDisplay, 0);
-            _IloCplex.setParam(IloCplex::NetDisplay, 0);
-            _IloCplex.setParam(IloCplex::BarDisplay, 0);
-            _IloCplex.setParam(IloCplex::SiftDisplay, 0);
+            _IloCplex.setParam(IloCplex::Param::Simplex::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Network::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Barrier::Display, 0);
+            _IloCplex.setParam(IloCplex::Param::Sifting::Display, 0);
         	break;
         }
     }
